@@ -206,7 +206,7 @@ O KNN foi muito bem no Iris, com acurácia em torno de 96% a 97% em todas as té
 ```
 .
 ├── iris.csv
-├── trabalho_iris_iniciante.py
+├── learning_iris.py
 └── README.md
 ```
 
