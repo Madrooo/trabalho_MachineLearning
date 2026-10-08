@@ -40,7 +40,7 @@ print(df.iloc[:, -1].value_counts())
 # ----------------------------------------------------------------
 # 2. Pré-processamento
 # ----------------------------------------------------------------
-print("\n2. PRÉ-PROCESSAMENTO")
+print("\n2. PRE-PROCESSAMENTO")
 
 # verificando se tem valores nulos e linhas repetidas
 print("Valores nulos por coluna:")
@@ -57,7 +57,7 @@ y = df.iloc[:, -1]
 # ----------------------------------------------------------------
 # 3. Divisão treino-teste (hold-out)
 # ----------------------------------------------------------------
-print("\n3. DIVISÃO TREINO-TESTE")
+print("\n3. DIVISAO TREINO-TESTE")
 
 # 80% para treino e 20% para teste
 # stratify=y mantém a mesma proporção de cada espécie nos dois conjuntos
@@ -87,7 +87,7 @@ print("Modelo treinado com k = 5")
 # ----------------------------------------------------------------
 # 5. Avaliação dos resultados
 # ----------------------------------------------------------------
-print("\n5. AVALIAÇÃO DOS RESULTADOS")
+print("\n5. AVALIACAO DOS RESULTADOS")
 
 # --- exemplo da aula (grávida = 1, não grávida = 0) ---
 print("\nExemplo da aula:")
@@ -106,8 +106,8 @@ acc = (TP + TN) / (TP + FP + TN + FN)
 prec = TP / (TP + FP)
 rec = TP / (TP + FN)
 f1 = 2 * (prec * rec) / (prec + rec)
-print("Acurácia:", round(acc, 2))
-print("Precisão:", round(prec, 2))
+print("Acuracia:", round(acc, 2))
+print("Precisao:", round(prec, 2))
 print("Recall:", round(rec, 2))
 print("F1:", round(f1, 2))
 
@@ -115,12 +115,12 @@ print("F1:", round(f1, 2))
 print("\nResultado do KNN no Iris:")
 
 # linhas = valor real, colunas = valor predito
-print("Matriz de confusão:")
+print("Matriz de confusao:")
 print(confusion_matrix(y_test, y_pred))
 
 # como são 3 classes uso average="macro" (média das 3 classes)
-print("Acurácia:", round(accuracy_score(y_test, y_pred), 4))
-print("Precisão:", round(precision_score(y_test, y_pred, average="macro"), 4))
+print("Acuracia:", round(accuracy_score(y_test, y_pred), 4))
+print("Precisao:", round(precision_score(y_test, y_pred, average="macro"), 4))
 print("Recall:", round(recall_score(y_test, y_pred, average="macro"), 4))
 print("F1:", round(f1_score(y_test, y_pred, average="macro"), 4))
 
@@ -130,14 +130,14 @@ print(classification_report(y_test, y_pred))
 # ----------------------------------------------------------------
 # 6. Técnicas de validação
 # ----------------------------------------------------------------
-print("6. TÉCNICAS DE VALIDAÇÃO")
+print("6. TECNICAS DE VALIDACAO")
 
 # --- hold-out: é a divisão treino-teste que já fiz acima ---
 acc_holdout = accuracy_score(y_test, y_pred)
-print("\nHold-out (uma divisão):", round(acc_holdout, 4))
+print("\nHold-out (uma divisao):", round(acc_holdout, 4))
 
 # --- n-hold-out: repetir o hold-out várias vezes com divisões diferentes ---
-print("\nn-hold-out (5 repetições):")
+print("\nn-hold-out (5 repeticoes):")
 resultados = []
 for i in range(5):
     Xtr, Xte, ytr, yte = train_test_split(
@@ -151,22 +151,22 @@ for i in range(5):
     modelo.fit(Xtr, ytr)
     acc_i = accuracy_score(yte, modelo.predict(Xte))
     resultados.append(acc_i)
-    print("  Repetição", i + 1, "->", round(acc_i, 4))
+    print("  Repeticao", i + 1, "->", round(acc_i, 4))
 
 media_nholdout = sum(resultados) / len(resultados)
-print("Média:", round(media_nholdout, 4))
+print("Media:", round(media_nholdout, 4))
 
 # --- k-fold cross validation com 5 folds ---
 # uso o pipeline para o scaler ser refeito dentro de cada fold
 print("\nK-fold com 5 folds:")
 modelo_kfold = make_pipeline(MinMaxScaler(), KNeighborsClassifier(n_neighbors=5))
 scores = cross_val_score(modelo_kfold, X, y, cv=5)
-print("Acurácia em cada fold:", scores.round(4))
-print("Média:", round(scores.mean(), 4))
+print("Acuracia em cada fold:", scores.round(4))
+print("Media:", round(scores.mean(), 4))
 
 # --- testando valores diferentes de k com o k-fold ---
 print("\nTestando valores de k:")
 for k in [1, 3, 5, 7, 9, 11]:
     modelo_k = make_pipeline(MinMaxScaler(), KNeighborsClassifier(n_neighbors=k))
     media = cross_val_score(modelo_k, X, y, cv=5).mean()
-    print("  k =", k, "-> acurácia média =", round(media, 4))
+    print("  k =", k, "-> acuracia media =", round(media, 4))
